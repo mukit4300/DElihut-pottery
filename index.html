@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delihut Pottery — Handcrafted Ceramics &amp; Terracotta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            tealBrand: {
+              DEFAULT: '#005A5B',
+              dark: '#004344',
+              light: '#E6F0F0',
+              muted: '#2C7576',
+            },
+            sageHero: '#EDF2F1',
+            charcoal: '#1A1A1A',
+            mutedGray: '#666666',
+            saleRed: '#D9383A',
+          },
+          boxShadow: {
+            soft: '0 10px 35px -10px rgba(0, 90, 91, 0.08)',
+            card: '0 8px 24px -6px rgba(0, 0, 0, 0.05)',
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="antialiased selection:bg-tealBrand selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ================= HEADER / NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all">
+    <div class="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between gap-4">
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center gap-2.5 group focus:outline-none">
+        <!-- Minimalist Pottery Vase Outline SVG -->
+        <svg class="w-8 h-8 text-tealBrand transition-transform duration-300 group-hover:scale-105" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 6H23M14.5 6C14.5 8.5 13.5 10.2 11.4 12.5C8.9 15.2 7.5 18.4 7.5 22.2C7.5 27.6 11.8 31 18 31C24.2 31 28.5 27.6 28.5 22.2C28.5 18.4 27.1 15.2 24.6 12.5C22.5 10.2 21.5 8.5 21.5 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.5 22C13.5 23.8 18.5 23.8 25.5 21.5" stroke="#005A5B" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.55"/>
+          <circle cx="25.5" cy="8.5" r="2" fill="#005A5B" fill-opacity="0.2" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div class="flex flex-col">
+          <span class="text-xl sm:text-[22px] font-bold tracking-tight text-charcoal leading-none">Delihut Pottery</span>
+          <span class="text-[10px] uppercase tracking-[0.2em] text-tealBrand font-semibold mt-0.5">Handcrafted Clay</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-8 text-[13px] font-semibold tracking-wider text-charcoal">
+        <a href="#home" class="nav-link relative py-1 text-tealBrand after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-tealBrand after:rounded-full">HOME</a>
+        <a href="#products" class="nav-link relative py-1 hover:text-tealBrand transition-colors">PRODUCTS</a>
+        <a href="#story" class="nav-link relative py-1 hover:text-tealBrand transition-colors">STORY</a>
+        <a href="#contact" class="nav-link relative py-1 hover:text-tealBrand transition-colors">CONTACT</a>
+      </nav>
+
+      <!-- Utility Icons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Search Button -->
+        <button id="search-toggle-btn" aria-label="Search Products" class="p-2.5 rounded-full text-charcoal hover:bg-sageHero hover:text-tealBrand transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
+          </svg>
+        </button>
+
+        <!-- User Account Button -->
+        <button id="account-modal-btn" aria-label="Customer Account" class="p-2.5 rounded-full text-charcoal hover:bg-sageHero hover:text-tealBrand transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path stroke-linecap="round" d="M5 20c1.5-3.8 4.2-5.5 7-5.5s5.5 1.7 7 5.5"></path>
+          </svg>
+        </button>
+
+        <!-- Shopping Cart Trigger -->
+        <button id="cart-open-btn" aria-label="Shopping Bag" class="relative p-2.5 rounded-full text-charcoal hover:bg-sageHero hover:text-tealBrand transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12l1 13H5L6 7z"></path>
+            <path stroke-linecap="round" d="M9 7V5a3 3 0 016 0v2"></path>
+          </svg>
+          <span id="cart-badge" class="absolute top-1 right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-tealBrand text-white text-[10px] font-bold flex items-center justify-center shadow-sm">2</span>
+        </button>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobile-menu-btn" aria-label="Open Navigation Menu" class="md:hidden p-2.5 rounded-full text-charcoal hover:bg-sageHero hover:text-tealBrand transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Expandable Search Bar -->
+    <div id="search-bar-drawer" class="hidden border-t border-gray-100 bg-sageHero/60">
+      <div class="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-10 py-3.5 flex items-center gap-3">
+        <svg class="w-5 h-5 text-tealBrand shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
+        </svg>
+        <input id="global-search-input" type="text" placeholder="Search handcrafted terracotta vases, stoneware mugs, dinner sets..." class="w-full bg-transparent text-sm text-charcoal placeholder-mutedGray focus:outline-none" />
+        <button id="search-clear-btn" class="text-xs font-semibold text-tealBrand hover:underline px-2">Clear</button>
+        <button id="search-close-btn" class="p-1.5 rounded-full hover:bg-white text-mutedGray hover:text-charcoal" aria-label="Close Search">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobile-nav-overlay" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
+  <aside id="mobile-nav-drawer" class="fixed top-0 right-0 z-50 w-72 max-w-[85vw] h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
+    <div>
+      <div class="flex items-center justify-between pb-6 border-b border-gray-100">
+        <span class="text-lg font-bold text-charcoal">Delihut Pottery</span>
+        <button id="mobile-menu-close" class="p-2 rounded-full hover:bg-sageHero text-charcoal" aria-label="Close Menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <nav class="flex flex-col gap-4 mt-6 text-sm font-semibold tracking-wider text-charcoal">
+        <a href="#home" class="mobile-nav-link py-2 px-3 rounded-xl bg-sageHero text-tealBrand">HOME</a>
+        <a href="#products" class="mobile-nav-link py-2 px-3 rounded-xl hover:bg-sageHero transition-colors">PRODUCTS</a>
+        <a href="#story" class="mobile-nav-link py-2 px-3 rounded-xl hover:bg-sageHero transition-colors">STORY</a>
+        <a href="#contact" class="mobile-nav-link py-2 px-3 rounded-xl hover:bg-sageHero transition-colors">CONTACT</a>
+      </nav>
+    </div>
+    <div class="pt-6 border-t border-gray-100 text-xs text-mutedGray space-y-2">
+      <p class="font-semibold text-charcoal">Delihut Artisan Studio</p>
+      <p>Hand-thrown in small batches with natural riverside clay &amp; lead-free glazes.</p>
+    </div>
+  </aside>
+
+  <main>
+    <!-- ================= 1. HERO SECTION ================= -->
+    <section id="home" class="pt-4 sm:pt-6 pb-10 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1260px] mx-auto relative overflow-hidden rounded-[28px] bg-sageHero px-6 sm:px-12 lg:px-16 pt-10 sm:pt-14 lg:pt-16 pb-8 sm:pb-12 shadow-soft">
+        
+        <!-- Subtle Botanical Palm / Fern Watermark Accents -->
+        <svg class="pointer-events-none absolute -left-10 bottom-6 w-64 h-64 text-tealBrand/[0.045]" viewBox="0 0 200 200" fill="currentColor">
+          <path d="M20 180C55 130 95 85 165 30C125 65 92 98 65 140M40 165C60 140 85 125 115 118M62 135C82 110 108 95 140 88M85 105C105 80 130 68 158 62M55 150C45 125 48 100 58 75M78 120C68 95 72 70 84 48"/>
+        </svg>
+        <svg class="pointer-events-none absolute -right-8 -top-8 w-72 h-72 text-tealBrand/[0.05] rotate-180" viewBox="0 0 200 200" fill="currentColor">
+          <path d="M20 180C55 130 95 85 165 30C125 65 92 98 65 140M40 165C60 140 85 125 115 118M62 135C82 110 108 95 140 88M85 105C105 80 130 68 158 62"/>
+        </svg>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <!-- Left Column -->
+          <div class="lg:col-span-6 space-y-6 text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-tealBrand/15 text-tealBrand text-xs font-semibold tracking-wide">
+              <span class="w-2 h-2 rounded-full bg-tealBrand animate-pulse"></span>
+              <span id="hero-tag">Artisan Clay Collection • 2026</span>
+            </div>
+
+            <h1 id="hero-title" class="text-3xl sm:text-5xl lg:text-[54px] font-extrabold text-charcoal leading-[1.13] tracking-tight">
+              Timeless Elegance In <span class="text-tealBrand block sm:inline">Every Space</span>
+            </h1>
+
+            <p id="hero-subtitle" class="text-sm sm:text-base text-mutedGray max-w-md leading-relaxed">
+              Elevate every ritual with thoughtfully handcrafted terracotta and stoneware for everyday moments and special gatherings.
+            </p>
+
+            <div class="pt-1 flex flex-wrap items-center gap-4">
+              <a href="#products" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full border-[1.5px] border-tealBrand text-tealBrand font-bold text-xs tracking-widest uppercase hover:bg-tealBrand hover:text-white transition-all duration-300 shadow-xs">
+                SHOP NOW
+              </a>
+              <a href="#story" class="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-charcoal hover:text-tealBrand transition-colors py-2 px-2">
+                <span>Our Craft</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Studio Pottery Centerpiece + Deep Teal Circle + Dashed Pointer -->
+          <div class="lg:col-span-6 relative flex items-center justify-center py-4 sm:py-6">
+            <!-- Deep Teal Circular Backdrop Accent behind vase rim -->
+            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-tealBrand absolute top-2 sm:top-3 right-[24%] sm:right-[28%] z-0 shadow-lg transition-transform duration-500" id="hero-circle-accent"></div>
+
+            <!-- Main Pottery Composition -->
+            <div class="relative z-10 w-full max-w-[430px] mx-auto">
+              <div class="relative rounded-[26px] overflow-hidden shadow-xl bg-white/60 backdrop-blur-xs border border-white/80 aspect-[4/3.6]">
+                <img
+                  id="hero-image"
+                  src="assets/image3.jpeg"
+                  onerror="this.src='https://placehold.co/800x720/EDF2F1/005A5B?text=Delihut+Handcrafted+Vase'"
+                  alt="Handcrafted Terracotta Vase by Delihut Pottery"
+                  class="w-full h-full object-cover object-center transition-all duration-500"
+                />
+                <!-- Subtle gradient overlay for caption legibility -->
+                <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/35 via-transparent to-transparent"></div>
+                <span id="hero-caption" class="absolute bottom-3.5 right-4 text-[11px] font-medium tracking-wide text-white/95 bg-black/25 backdrop-blur-xs px-3 py-1 rounded-full">
+                  Delihut Signature Collection
+                </span>
+              </div>
+
+              <!-- Dashed Pointer Line & Callout Label (Matching Mockup) -->
+              <div class="hidden sm:flex items-center gap-2.5 absolute -right-4 lg:-right-8 top-10 z-20">
+                <div class="flex items-center">
+                  <span class="w-2.5 h-2.5 rounded-full bg-white border-2 border-tealBrand shadow-xs"></span>
+                  <span class="w-12 border-t-[1.5px] border-dashed border-tealBrand/70"></span>
+                </div>
+                <div class="bg-white/95 backdrop-blur-xs px-3.5 py-2 rounded-xl shadow-md border border-tealBrand/10">
+                  <p id="hero-callout" class="text-[11px] font-semibold text-charcoal leading-snug max-w-[125px]">
+                    Handcrafted Terracotta Vase
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Bar: Slide Counter (01/03) & Interactive Controls -->
+        <div class="relative z-10 mt-8 pt-4 flex items-center justify-between border-t border-tealBrand/10">
+          <div class="flex items-center gap-3">
+            <span id="hero-counter" class="text-xs font-bold tracking-widest text-mutedGray">(01/03)</span>
+            <div class="flex items-center gap-1.5" id="hero-dots">
+              <button data-slide="0" aria-label="Slide 1" class="hero-dot w-6 h-1.5 rounded-full bg-tealBrand transition-all"></button>
+              <button data-slide="1" aria-label="Slide 2" class="hero-dot w-2 h-1.5 rounded-full bg-tealBrand/30 hover:bg-tealBrand/60 transition-all"></button>
+              <button data-slide="2" aria-label="Slide 3" class="hero-dot w-2 h-1.5 rounded-full bg-tealBrand/30 hover:bg-tealBrand/60 transition-all"></button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="hero-prev" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-white/90 hover:bg-tealBrand text-charcoal hover:text-white flex items-center justify-center shadow-xs transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <button id="hero-next" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-white/90 hover:bg-tealBrand text-charcoal hover:text-white flex items-center justify-center shadow-xs transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. CATEGORY HIGHLIGHTS (3-COLUMN GRID) ================= -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1140px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 text-center">
+        
+        <!-- Category 1: Mugs -->
+        <button data-category-jump="Mugs" class="category-card group flex flex-col items-center p-6 rounded-3xl hover:bg-sageHero/60 transition-all duration-300 focus:outline-none">
+          <div class="w-20 h-20 rounded-full bg-[#F4F7F6] group-hover:bg-white group-hover:shadow-md flex items-center justify-center mb-5 transition-all duration-300">
+            <!-- Crisp Teal Line-Art Mug SVG -->
+            <svg class="w-10 h-10 text-tealBrand transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 15h20v14a8 8 0 01-8 8h-4a8 8 0 01-8-8V15z"/>
+              <path d="M32 18h4a4 4 0 010 8h-4"/>
+              <path d="M9 40h26"/>
+              <path d="M18 9c0 2 2 2 2 4M24 8c0 2 2 2 2 4"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-charcoal group-hover:text-tealBrand transition-colors mb-2">Mugs</h3>
+          <p class="text-xs sm:text-[13px] text-mutedGray leading-relaxed max-w-[260px]">
+            Hand-thrown stoneware mugs, glazed, rustic and personalized for daily rituals.
+          </p>
+        </button>
+
+        <!-- Category 2: Plates -->
+        <button data-category-jump="Dinnerware" class="category-card group flex flex-col items-center p-6 rounded-3xl hover:bg-sageHero/60 transition-all duration-300 focus:outline-none">
+          <div class="w-20 h-20 rounded-full bg-[#F4F7F6] group-hover:bg-white group-hover:shadow-md flex items-center justify-center mb-5 transition-all duration-300">
+            <!-- Crisp Teal Line-Art Stacked Plates SVG -->
+            <svg class="w-10 h-10 text-tealBrand transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="24" cy="23" rx="15" ry="9"/>
+              <ellipse cx="24" cy="23" rx="9" ry="5"/>
+              <path d="M10 27c2 4.5 7.5 7.5 14 7.5s12-3 14-7.5"/>
+              <path d="M12 32c2.5 3.5 7 5.5 12 5.5s9.5-2 12-5.5"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-charcoal group-hover:text-tealBrand transition-colors mb-2">Plates</h3>
+          <p class="text-xs sm:text-[13px] text-mutedGray leading-relaxed max-w-[260px]">
+            Artisanal dinner plates, serving platters, and decorative ceramic dishes.
+          </p>
+        </button>
+
+        <!-- Category 3: Vases -->
+        <button data-category-jump="Vases" class="category-card group flex flex-col items-center p-6 rounded-3xl hover:bg-sageHero/60 transition-all duration-300 focus:outline-none">
+          <div class="w-20 h-20 rounded-full bg-[#F4F7F6] group-hover:bg-white group-hover:shadow-md flex items-center justify-center mb-5 transition-all duration-300">
+            <!-- Crisp Teal Line-Art Amphora Vase SVG -->
+            <svg class="w-10 h-10 text-tealBrand transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 10h12"/>
+              <path d="M20 10v4c0 2-5 5-5 13 0 6.5 4 11 9 11s9-4.5 9-11c0-8-5-11-5-13v-4"/>
+              <path d="M15 16c-3 0-4 2.5-4 5s1.5 4.5 4 4.5"/>
+              <path d="M33 16c3 0 4 2.5 4 5s-1.5 4.5-4 4.5"/>
+              <path d="M16 28c4 1.5 12 1.5 16 0"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-charcoal group-hover:text-tealBrand transition-colors mb-2">Vases</h3>
+          <p class="text-xs sm:text-[13px] text-mutedGray leading-relaxed max-w-[260px]">
+            Sculptural terracotta vases, amphoras, and minimalist bud holders.
+          </p>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ================= 3. PROMOTIONAL BANNER CARD (DEEP TEAL) ================= -->
+    <section class="py-4 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1260px] mx-auto relative rounded-[26px] bg-gradient-to-r from-[#004849] via-[#005A5B] to-[#0B6E70] p-3 sm:p-4 shadow-soft overflow-hidden">
+        <!-- Inner thin white border frame matching mockup -->
+        <div class="relative rounded-[20px] border border-white/25 px-6 sm:px-12 lg:px-14 py-8 sm:py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+          
+          <!-- Left Content -->
+          <div class="lg:w-1/2 text-white space-y-3.5 text-center lg:text-left">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight leading-snug">
+              Exclusive Pottery <br class="hidden sm:inline" />Collection Sale
+            </h2>
+            <p class="text-xs sm:text-sm text-white/80 max-w-md mx-auto lg:mx-0 leading-relaxed">
+              Upgrade your living space with handcrafted Delihut ceramics, tableware, and decor designed for warmth and durability.
+            </p>
+            <div class="pt-2">
+              <a href="#products" class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-white border-b border-white/60 pb-1 hover:border-white hover:gap-3 transition-all">
+                <span>SHOP NOW</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Center-Right: Distressed Brush-Stroke 50% OFF Badge + Sculptural Vase -->
+          <div class="lg:w-1/2 flex flex-col sm:flex-row items-center justify-center lg:justify-end gap-6 sm:gap-10">
+            <!-- Distressed White Brush-Stroke Badge -->
+            <div class="brush-badge px-7 py-4 shadow-lg transform -rotate-2 select-none">
+              <span class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-tealBrand">
+                50% OFF
+              </span>
+            </div>
+
+            <!-- Sculptural Ceramic Vase Image -->
+            <div class="w-32 h-36 sm:w-36 sm:h-40 rounded-2xl overflow-hidden shadow-xl border-2 border-white/20 bg-white/10 shrink-0">
+              <img
+                src="assets/image4.jpeg"
+                onerror="this.src='https://placehold.co/300x340/005A5B/FFFFFF?text=Sculptural+Vase'"
+                alt="Sculptural Ceramic Vase on Sale"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
+          <!-- Bottom Carousel Indicator Dots -->
+          <div class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. "OUR BEST SELLER" PRODUCT GRID ================= -->
+    <section id="products" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1260px] mx-auto">
+        <!-- Section Header & Interactive Category Filter Tabs -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-tealBrand">Curated Pieces</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-charcoal tracking-tight mt-1">Our Best Seller</h2>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div id="filter-tabs" class="flex flex-wrap items-center gap-2">
+            <button data-filter="All" class="filter-tab active px-4 py-2 rounded-full text-xs font-bold bg-tealBrand text-white transition-all">
+              All
+            </button>
+            <button data-filter="Vases" class="filter-tab px-4 py-2 rounded-full text-xs font-bold bg-[#F4F7F6] text-charcoal hover:bg-tealBrand/10 hover:text-tealBrand transition-all">
+              Vases
+            </button>
+            <button data-filter="Dinnerware" class="filter-tab px-4 py-2 rounded-full text-xs font-bold bg-[#F4F7F6] text-charcoal hover:bg-tealBrand/10 hover:text-tealBrand transition-all">
+              Dinnerware
+            </button>
+            <button data-filter="Mugs" class="filter-tab px-4 py-2 rounded-full text-xs font-bold bg-[#F4F7F6] text-charcoal hover:bg-tealBrand/10 hover:text-tealBrand transition-all">
+              Mugs
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty Search State -->
+        <div id="no-products-msg" class="hidden text-center py-16 bg-[#F4F7F6] rounded-3xl">
+          <p class="text-base font-bold text-charcoal">No pottery pieces match your search.</p>
+          <p class="text-xs text-mutedGray mt-1">Try resetting your filter or searching for "Vase", "Plate", or "Terracotta".</p>
+          <button id="reset-filters-btn" class="mt-4 px-6 py-2.5 rounded-full bg-tealBrand text-white text-xs font-bold">
+            Reset Filters
+          </button>
+        </div>
+
+        <!-- 4-Column Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+          <!-- Products rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Centered Pill-Shaped Outlined CTA Button -->
+        <div class="mt-14 text-center">
+          <button id="view-all-btn" class="inline-flex items-center justify-center px-9 py-3.5 rounded-full border-[1.5px] border-tealBrand text-tealBrand font-bold text-xs tracking-widest uppercase hover:bg-tealBrand hover:text-white transition-all duration-300">
+            VIEW ALL PRODUCTS
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. MID-PAGE PROMO BANNER ("TRANSFORM YOUR SPACE") ================= -->
+    <section id="story" class="py-6 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1260px] mx-auto relative rounded-[28px] overflow-hidden bg-[#F3F5F4] min-h-[380px] sm:min-h-[430px] flex items-center justify-center text-center px-6 py-14">
+        <!-- Soft Monochrome Ceramic Studio Backdrop Image -->
+        <img
+          src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1400&q=85"
+          onerror="this.src='https://placehold.co/1400x500/EAEFED/666666?text=Delihut+Ceramic+Studio'"
+          alt="Delihut Ceramic Studio Collection"
+          class="absolute inset-0 w-full h-full object-cover object-center grayscale opacity-35"
+        />
+        <!-- Soft Radial White Fade for crisp text contrast -->
+        <div class="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white/30"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-xl mx-auto space-y-5">
+          <span class="inline-block px-4 py-1.5 rounded-md bg-tealBrand text-white text-[11px] font-bold tracking-wider uppercase shadow-xs">
+            Flat 30% Discount
+          </span>
+
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-charcoal leading-[1.18] tracking-tight">
+            Transform Your Space <br />With Timeless Ceramics
+          </h2>
+
+          <p class="text-xs sm:text-sm text-mutedGray max-w-md mx-auto leading-relaxed">
+            From earthy terracotta tableware to sculptural home accents, discover handcrafted pottery that blends beauty with strength.
+          </p>
+
+          <div class="pt-2">
+            <a href="#products" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full border-[1.5px] border-tealBrand bg-white/80 backdrop-blur-xs text-tealBrand font-bold text-xs tracking-widest uppercase hover:bg-tealBrand hover:text-white transition-all duration-300">
+              SHOP NOW
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6. "OUR CUSTOMERS SPEAK" TESTIMONIAL SECTION ================= -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[960px] mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-charcoal tracking-tight mb-8">
+          Our Customers Speak
+        </h2>
+
+        <!-- Soft Rounded Card Container -->
+        <div class="relative rounded-[28px] bg-[#F6F8F8] border border-gray-100 p-8 sm:p-12 shadow-soft">
+          <div class="flex flex-col sm:flex-row items-start gap-5 sm:gap-7">
+            <!-- Large Decorative Outline Quotation Marks -->
+            <svg class="w-12 h-12 sm:w-14 sm:h-14 text-tealBrand/30 shrink-0" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M26 16H14c-2.2 0-4 1.8-4 4v12c0 2.2 1.8 4 4 4h6c0 5.5-3.5 9-9 10v4c9-1 15-7.5 15-18V20c0-2.2-1.8-4-4-4z"/>
+              <path d="M52 16H40c-2.2 0-4 1.8-4 4v12c0 2.2 1.8 4 4 4h6c0 5.5-3.5 9-9 10v4c9-1 15-7.5 15-18V20c0-2.2-1.8-4-4-4z"/>
+            </svg>
+
+            <div class="space-y-6 flex-1">
+              <!-- Active Review Quote -->
+              <p id="testimonial-quote" class="text-sm sm:text-base text-mutedGray leading-relaxed transition-opacity duration-300">
+                "Delihut Pottery has completely transformed how I style residential dining spaces. Every terracotta amphora and stoneware plate carries subtle wheel-thrown character, rich mineral glaze depth, and arrived impeccably cushioned in zero-plastic packaging."
+              </p>
+
+              <!-- Interactive Avatar Switcher Row -->
+              <div id="testimonial-avatars" class="flex flex-wrap items-center gap-3 pt-1">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. "INSTAGRAM SHOP" GALLERY ================= -->
+    <section class="py-10 sm:py-14 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1260px] mx-auto">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-charcoal tracking-tight">Instagram Shop</h2>
+            <p class="text-xs sm:text-sm text-mutedGray mt-1">Tag <span class="text-tealBrand font-semibold">@delihutpottery</span> to feature your handcrafted table moments</p>
+          </div>
+          <a href="#products" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-tealBrand hover:underline">
+            <span>Explore Feed</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- 5-Tile Responsive Lifestyle Gallery -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Tile 1 -->
+          <div data-quick-product="1" class="insta-tile group relative rounded-2xl overflow-hidden aspect-square bg-sageHero cursor-pointer">
+            <img src="assets/image2.jpeg" onerror="this.src='https://placehold.co/500x500/EDF2F1/005A5B?text=Delihut+Table'" alt="Terracotta Dinnerware Lifestyle" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <div class="absolute inset-0 bg-tealBrand/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-white">
+              <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span class="text-xs font-bold">Shop Dinnerware Set</span>
+              <span class="text-[11px] text-white/80 mt-0.5">$145.00</span>
+            </div>
+          </div>
+
+          <!-- Tile 2 -->
+          <div data-quick-product="3" class="insta-tile group relative rounded-2xl overflow-hidden aspect-square bg-sageHero cursor-pointer">
+            <img src="assets/image9.jpeg" onerror="this.src='https://placehold.co/500x500/EDF2F1/005A5B?text=Bud+Vase'" alt="Crimson Clay Bud Vase" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <div class="absolute inset-0 bg-tealBrand/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-white">
+              <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span class="text-xs font-bold">Shop Crimson Bud Vase</span>
+              <span class="text-[11px] text-white/80 mt-0.5">$100.00</span>
+            </div>
+          </div>
+
+          <!-- Tile 3 -->
+          <div data-quick-product="5" class="insta-tile group relative rounded-2xl overflow-hidden aspect-square bg-sageHero cursor-pointer">
+            <img src="assets/image5.jpeg" onerror="this.src='https://placehold.co/500x500/EDF2F1/005A5B?text=Stoneware+Mugs'" alt="Nordic Stoneware Mugs" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <div class="absolute inset-0 bg-tealBrand/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-white">
+              <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span class="text-xs font-bold">Shop Stoneware Duo</span>
+              <span class="text-[11px] text-white/80 mt-0.5">$85.00</span>
+            </div>
+          </div>
+
+          <!-- Tile 4 -->
+          <div data-quick-product="6" class="insta-tile group relative rounded-2xl overflow-hidden aspect-square bg-sageHero cursor-pointer">
+            <img src="assets/image8.jpeg" onerror="this.src='https://placehold.co/500x500/EDF2F1/005A5B?text=Neck+Vase'" alt="Sculpted Neck Vase" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <div class="absolute inset-0 bg-tealBrand/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-white">
+              <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span class="text-xs font-bold">Shop Sculpted Neck Vase</span>
+              <span class="text-[11px] text-white/80 mt-0.5">$325.00</span>
+            </div>
+          </div>
+
+          <!-- Tile 5 -->
+          <div data-quick-product="8" class="insta-tile group relative rounded-2xl overflow-hidden aspect-square bg-sageHero cursor-pointer col-span-2 sm:col-span-1">
+            <img src="assets/Image1.jpeg" onerror="this.src='https://placehold.co/500x500/EDF2F1/005A5B?text=Ceramic+Plate'" alt="Minimalist Ceramic Plate" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <div class="absolute inset-0 bg-tealBrand/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center text-white">
+              <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span class="text-xs font-bold">Shop Minimalist Plate</span>
+              <span class="text-[11px] text-white/80 mt-0.5">$55.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= 8. FOOTER ================= -->
+  <footer id="contact" class="mt-12 bg-[#F4F7F6] border-t border-gray-200/70 pt-16 pb-10 px-4 sm:px-6 lg:px-10">
+    <div class="max-w-[1260px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-gray-200">
+      
+      <!-- Brand Column -->
+      <div class="lg:col-span-4 space-y-4">
+        <a href="#home" class="flex items-center gap-2.5">
+          <svg class="w-8 h-8 text-tealBrand" viewBox="0 0 36 36" fill="none">
+            <path d="M13 6H23M14.5 6C14.5 8.5 13.5 10.2 11.4 12.5C8.9 15.2 7.5 18.4 7.5 22.2C7.5 27.6 11.8 31 18 31C24.2 31 28.5 27.6 28.5 22.2C28.5 18.4 27.1 15.2 24.6 12.5C22.5 10.2 21.5 8.5 21.5 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xl font-bold text-charcoal">Delihut Pottery</span>
+        </a>
+        <p class="text-xs sm:text-sm text-mutedGray leading-relaxed max-w-sm">
+          Celebrated handcrafted terracotta, stoneware mugs, and sculptural vessels shaped on the wheel by master potters using natural clay and food-safe mineral glazes.
+        </p>
+        <div class="flex items-center gap-3 pt-1">
+          <a href="#contact" aria-label="Instagram" class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-charcoal hover:bg-tealBrand hover:text-white hover:border-tealBrand transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg>
+          </a>
+          <a href="#contact" aria-label="Pinterest" class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-charcoal hover:bg-tealBrand hover:text-white hover:border-tealBrand transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M9.5 19l2-7.5M10 13c1 1.5 3.5 1.5 4.5-.5s.5-4.5-2-5-4.5 1.5-4 3.5"/></svg>
+          </a>
+          <a href="#contact" aria-label="Facebook" class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-charcoal hover:bg-tealBrand hover:text-white hover:border-tealBrand transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v3H7v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="lg:col-span-2 space-y-3">
+        <h4 class="text-xs font-extrabold uppercase tracking-wider text-charcoal">Collections</h4>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-mutedGray">
+          <li><a href="#products" class="hover:text-tealBrand transition-colors">Terracotta Vases</a></li>
+          <li><a href="#products" class="hover:text-tealBrand transition-colors">Dinnerware Sets</a></li>
+          <li><a href="#products" class="hover:text-tealBrand transition-colors">Stoneware Mugs</a></li>
+          <li><a href="#products" class="hover:text-tealBrand transition-colors">Serving Platters</a></li>
+        </ul>
+      </div>
+
+      <!-- Studio Info -->
+      <div class="lg:col-span-3 space-y-3">
+        <h4 class="text-xs font-extrabold uppercase tracking-wider text-charcoal">Studio &amp; Atelier</h4>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-mutedGray">
+          <li>House 42, Road 11, Banani Studio District, Dhaka</li>
+          <li>Open Tue – Sun: 10:00 AM – 8:00 PM</li>
+          <li>hello@delihutpottery.com</li>
+          <li>+880 1711-004892</li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Signup -->
+      <div class="lg:col-span-3 space-y-3">
+        <h4 class="text-xs font-extrabold uppercase tracking-wider text-charcoal">Kiln Notes &amp; Drops</h4>
+        <p class="text-xs text-mutedGray leading-relaxed">
+          Receive early access to small-batch kiln openings and 15% off your first Delihut order.
+        </p>
+        <form id="newsletter-form" class="flex flex-col sm:flex-row lg:flex-col gap-2 pt-1">
+          <input type="email" required placeholder="Enter your email address" class="w-full px-4 py-2.5 rounded-full bg-white border border-gray-200 text-xs text-charcoal focus:outline-none focus:border-tealBrand" />
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-tealBrand text-white text-xs font-bold tracking-wider uppercase hover:bg-tealBrand-dark transition-colors">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="max-w-[1260px] mx-auto pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-mutedGray">
+      <p>© 2026 Delihut Pottery. All rights reserved. Handcrafted with earth &amp; fire.</p>
+      <div class="flex items-center gap-6">
+        <a href="#contact" class="hover:text-tealBrand">Care Guide</a>
+        <a href="#contact" class="hover:text-tealBrand">Breakage Guarantee</a>
+        <a href="#contact" class="hover:text-tealBrand">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= SLIDE-OVER SHOPPING CART DRAWER ================= -->
+  <div id="cart-overlay" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 z-50 w-full max-w-md h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Cart Header -->
+    <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <h3 class="text-lg font-extrabold text-charcoal">Your Pottery Bag</h3>
+        <span id="cart-drawer-count" class="px-2.5 py-0.5 rounded-full bg-sageHero text-tealBrand text-xs font-bold">2 items</span>
+      </div>
+      <button id="cart-close-btn" class="p-2 rounded-full hover:bg-sageHero text-charcoal transition-colors" aria-label="Close Cart">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Free Shipping Bar -->
+    <div class="px-6 py-3 bg-sageHero/80 text-xs text-tealBrand font-medium flex items-center gap-2">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <span id="shipping-status-text">Complimentary insured ceramic shipping unlocked!</span>
+    </div>
+
+    <!-- Cart Items List -->
+    <div id="cart-items-container" class="flex-1 overflow-y-auto px-6 py-4 divide-y divide-gray-100">
+      <!-- Rendered dynamically -->
+    </div>
+
+    <!-- Cart Footer -->
+    <div class="p-6 border-t border-gray-100 bg-[#FAFAFA] space-y-4">
+      <div class="space-y-1.5 text-sm">
+        <div class="flex justify-between text-mutedGray">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-bold text-charcoal">$190.00</span>
+        </div>
+        <div class="flex justify-between text-xs text-mutedGray">
+          <span>Eco-Cushioned Packaging</span>
+          <span class="text-tealBrand font-semibold">Free</span>
+        </div>
+      </div>
+      <button id="checkout-btn" class="w-full py-3.5 rounded-full bg-tealBrand hover:bg-tealBrand-dark text-white font-bold text-xs tracking-widest uppercase shadow-md transition-all">
+        Proceed to Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= PRODUCT QUICK VIEW MODAL ================= -->
+  <div id="quickview-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="relative w-full max-w-2xl bg-white rounded-[28px] shadow-2xl overflow-hidden animate-fade-up">
+      <button id="quickview-close" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-sageHero text-charcoal flex items-center justify-center shadow-sm" aria-label="Close Quick View">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <div id="quickview-content" class="grid grid-cols-1 md:grid-cols-2">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CUSTOMER ACCOUNT MODAL ================= -->
+  <div id="account-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="relative w-full max-w-md bg-white rounded-[28px] p-8 shadow-2xl animate-fade-up">
+      <button id="account-close" class="absolute top-4 right-4 w-9 h-9 rounded-full hover:bg-sageHero text-charcoal flex items-center justify-center" aria-label="Close Account Modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <div class="text-center mb-6">
+        <span class="inline-block px-3 py-1 rounded-full bg-sageHero text-tealBrand text-[11px] font-bold uppercase tracking-wider mb-2">Delihut Collector Club</span>
+        <h3 class="text-2xl font-extrabold text-charcoal">Welcome Back</h3>
+        <p class="text-xs text-mutedGray mt-1">Sign in to track your kiln orders and saved ceramics.</p>
+      </div>
+      <form id="account-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-charcoal mb-1">Email Address</label>
+          <input type="email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-tealBrand" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-charcoal mb-1">Password</label>
+          <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-tealBrand" />
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-full bg-tealBrand hover:bg-tealBrand-dark text-white text-xs font-bold tracking-widest uppercase transition-colors">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
+  <script src="script.js" defer></script>
+</body>
+</html>
